@@ -1,4 +1,5 @@
 
+
 let express = require('express');
 let app = express();
 
@@ -25,6 +26,7 @@ app.get('/project/:id', (req, res, next) => {
         console.log('Rendering project');
     } else {
         res.sendStatus(404);
+        console.log("Error: Page not found")
     }
 });
 
@@ -32,14 +34,17 @@ app.use((req, res, next) => {
     const error = new Error('Page not found');
     error.status = 404;
     next(error);
+    console.log(error)
 });
 
 app.use((error, req, res, next) => {
+    console.log("Error: Opps! Don't worry its out fault not yours")
     res.status(error.status || 500);
     res.render('error', {
         message: error.message,
         error: error
       });
+      
 });
 
 let port = process.env.PORT || 3000
@@ -49,6 +54,4 @@ app.listen(port, () => {
 });
 
 module.exports = app;
-
-
 
